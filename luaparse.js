@@ -385,6 +385,14 @@
         , raw: raw
       };
     }
+
+    , shortFunctionDefinition: function(parameters, expression) {
+      return {
+        type: 'ShortFunctionDefinition'
+        , parameters: parameters
+        , expression: expression
+      };
+    }
   };
 
   // Wrap up the node object.
@@ -674,9 +682,12 @@
           if (47 === next) return scanPunctuator('//');
         return scanPunctuator('/');
 
-      case 38: case 124: // & |
+      case 38:
         if (!features.bitwiseOperators)
           break;
+        /* fall through */
+
+      case 124: // & |
 
         /* fall through */
       case 42: case 94: case 37: case 44: case 123: case 125:
@@ -2069,25 +2080,11 @@
     return finishNode(ast.identifier(identifier));
   }
 
-  // Parse the functions parameters and body block. The name should already
-  // have been parsed and passed to this declaration function. By separating
-  // this we allow for anonymous functions in expressions.
-  //
-  // For local functions there's a boolean parameter which needs to be set
-  // when parsing the declaration.
-  //
-  //     funcdecl ::= '(' [parlist] ')' block 'end'
-  //     parlist ::= Name {',' Name} | [',' '...'] | '...'
-
-  function parseFunctionDeclaration(name, isLocal) {
-    var flowContext = makeFlowContext();
-    flowContext.pushScope();
-
+  function parseParameterList(flowContext, terminator) {
     var parameters = [];
-    expect('(');
 
     // The declaration has arguments
-    if (!consume(')')) {
+    if (!consume(terminator)) {
       // Arguments are a comma separated list of identifiers, optionally ending
       // with a vararg.
       while (true) {
@@ -2107,18 +2104,65 @@
         } else {
           raiseUnexpectedToken('<name> or \'...\'', token);
         }
-        expect(')');
+        expect(terminator);
         break;
       }
     }
 
+    return parameters;
+  }
+
+  // Parse the functions parameters and body block. The name should already
+  // have been parsed and passed to this declaration function. By separating
+  // this we allow for anonymous functions in expressions.
+  //
+  // For local functions there's a boolean parameter which needs to be set
+  // when parsing the declaration.
+  //
+  //     funcdecl ::= '(' [parlist] ')' block 'end'
+  //     parlist ::= Name {',' Name} | [',' '...'] | '...'
+
+  function parseFunctionDeclaration(name, isLocal) {
+    var flowContext = makeFlowContext();
+    flowContext.pushScope();
+
+    expect('(');
+
+    var parameters = parseParameterList(flowContext,  ')');
     var body = parseBlock(flowContext);
+
     flowContext.popScope();
     expect('end');
     if (options.scope) destroyScope();
 
     isLocal = isLocal || false;
     return finishNode(ast.functionStatement(name, parameters, isLocal, body));
+  }
+
+  // Parse a MoonSharp short anonymous function. Unlike regular function
+  // syntax which can appear as both a statement and an expression, short
+  // anonymous functions are only allowed as an expression. Short anonymous
+  // functions are made of a parameter list and a singular expression.
+  //
+  //     shortfuncdef ::= '|' [parlist] '|' expression
+  //     parlist ::= Name {',' Name} | [',' '...'] | '...'
+
+  function parseShortFunctionDefinition() {
+    var flowContext = makeFlowContext();
+    flowContext.pushScope();
+
+    var parameters = parseParameterList(flowContext, '|');
+
+    if (token.type === Punctuator && token.value === '|') { // Non-parenthesized nested short functions are forbidden.
+      raiseUnexpectedToken('<expression>', lookahead);
+    }
+
+    var expression = parseExpectedExpression(flowContext);
+
+    flowContext.popScope();
+    if (options.scope) destroyScope();
+
+    return finishNode(ast.shortFunctionDefinition(parameters, expression));
   }
 
   // Parse the function name as identifiers and member expressions.
@@ -2206,7 +2250,7 @@
   //     exp ::= (unop exp | primary | prefixexp ) { binop exp }
   //
   //     primary ::= nil | false | true | Number | String | '...'
-  //          | functiondef | tableconstructor
+  //          | functiondef | shortfunctiondef | tableconstructor
   //
   //     prefixexp ::= (Name | '(' exp ')' ) { '[' exp ']'
   //          | '.' Name | ':' Name args | args }
@@ -2429,7 +2473,7 @@
   }
 
   //     primary ::= String | Numeric | nil | true | false
-  //          | functiondef | tableconstructor | '...'
+  //          | functiondef | shortfunctiondef | tableconstructor | '...'
 
   function parsePrimaryExpression(flowContext) {
     var literals = StringLiteral | NumericLiteral | BooleanLiteral | NilLiteral | VarargLiteral
@@ -2448,11 +2492,11 @@
       var raw = input.slice(token.range[0], token.range[1]);
       next();
       return finishNode(ast.literal(type, value, raw));
-    } else if (Keyword === type && 'function' === value) {
+    } else if ((Keyword === type && 'function' === value) || (Punctuator === type && '|' === value)) {
       pushLocation(marker);
       next();
       if (options.scope) createScope();
-      return parseFunctionDeclaration(null);
+      return Punctuator === type ? parseShortFunctionDefinition() : parseFunctionDeclaration(null);
     } else if (consume('{')) {
       pushLocation(marker);
       return parseTableConstructor(flowContext);

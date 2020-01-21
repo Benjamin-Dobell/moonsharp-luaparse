@@ -78,6 +78,7 @@
       , './spec/repeat'
       , './spec/return'
       , './spec/scope'
+      , './spec/shortanonymousfunctions'
       , './spec/statements'
       , './spec/tableconstructors'
       , './spec/while'
@@ -273,6 +274,10 @@
         case 'VarargLiteral':
         case 'BreakStatement':
         case 'Comment':
+          break;
+        case 'ShortFunctionDefinition':
+          visitKey('parameters');
+          visitKey('expression');
           break;
         default:
           throw new Error('Unhandled ' + node.type);
