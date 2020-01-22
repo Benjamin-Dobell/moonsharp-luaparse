@@ -44,6 +44,7 @@
     "marked": "^0.8.0",
     "nyc": "^15.0.0",
     "spec": "1.0.1",
-    "testem": "^3.0.2"
+    "testem": "^3.0.2",
+    "uglify-save-license": "^0.4.1"
   }
 }
