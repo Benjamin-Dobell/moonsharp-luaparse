@@ -16,7 +16,9 @@
     "README.md",
     "LICENSE",
     "luaparse.js",
-    "bin/luaparse"
+    "bin/luaparse",
+    "index.d.ts",
+    "types/ast.d.ts"
   ],
   "main": "luaparse.js",
   "bin": "./bin/luaparse",
@@ -46,5 +48,6 @@
     "spec": "1.0.1",
     "testem": "^3.0.2",
     "uglify-save-license": "^0.4.1"
-  }
+  },
+  "types": "index.d.ts"
 }
