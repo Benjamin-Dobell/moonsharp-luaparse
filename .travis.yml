@@ -25,19 +25,21 @@ before_deploy:
 - make build
 deploy:
   - provider: npm
+    edge: true
     email: contact@glassechidna.com.au
     api_key:
-      secure: z14yjBrBrG+Aw7XggMHjZ5Bu1EB4BUEzXoL9akLlHBQYMEilGmNUigB5KOl8OKtuGNy2TErKLZTinPz/zIHbCcVF/okE4FaxGWoQwLTgjGfHio8y5KwpRrFkBJN7V6yIH9ZRoGYLb8X9dyj7I4twpykJca4parTCynffac9MAv7ivmK4gXScX0HzfnAamy2cEV8fT6wate1EtzmngCREPpEyJNyXwm9a+7i+15XSaFay4E0znLpIU8K/1LvdwRLoqE4IwGKAiHFfEf8Z9eMjS8OWM2QaeV8oJ4gg/2/AwZb+ENq358HT0a6Xf2kR15ipWlJtRiWz4ktbGWAN4Bq4okxfd1fQRvXcFMJwSPexxhu4ZSinnKHnE6uqS8hvt+0jSAG2F0SnZJbc3+nWCWMpCUO6JNkagp2fcaJ9SUNPPAEYcpb5lqKjJWchhvuKINo7xSka18FElUvkmmwLAlrQrL0wJA08kyfuruuTaeByzXogK0BxJNQf6naRhx5UJXLJr3VgahtzQsqpL0Cs8nfbTZHyZAj9kE0yfpHYf5LPSBMEBzKo9T0uxfdIXA7ACWiEyNXZTI++V1kp71ZdBSZrXy5cO3m70Od8UcuFENvWtfpA5U4E3FFtb1FtAmVcvkMKv43KMNhKbMwWJG3jCoz7eP1+tm1Yh71xyJ6gVcR0Tqg=
+      secure: "z14yjBrBrG+Aw7XggMHjZ5Bu1EB4BUEzXoL9akLlHBQYMEilGmNUigB5KOl8OKtuGNy2TErKLZTinPz/zIHbCcVF/okE4FaxGWoQwLTgjGfHio8y5KwpRrFkBJN7V6yIH9ZRoGYLb8X9dyj7I4twpykJca4parTCynffac9MAv7ivmK4gXScX0HzfnAamy2cEV8fT6wate1EtzmngCREPpEyJNyXwm9a+7i+15XSaFay4E0znLpIU8K/1LvdwRLoqE4IwGKAiHFfEf8Z9eMjS8OWM2QaeV8oJ4gg/2/AwZb+ENq358HT0a6Xf2kR15ipWlJtRiWz4ktbGWAN4Bq4okxfd1fQRvXcFMJwSPexxhu4ZSinnKHnE6uqS8hvt+0jSAG2F0SnZJbc3+nWCWMpCUO6JNkagp2fcaJ9SUNPPAEYcpb5lqKjJWchhvuKINo7xSka18FElUvkmmwLAlrQrL0wJA08kyfuruuTaeByzXogK0BxJNQf6naRhx5UJXLJr3VgahtzQsqpL0Cs8nfbTZHyZAj9kE0yfpHYf5LPSBMEBzKo9T0uxfdIXA7ACWiEyNXZTI++V1kp71ZdBSZrXy5cO3m70Od8UcuFENvWtfpA5U4E3FFtb1FtAmVcvkMKv43KMNhKbMwWJG3jCoz7eP1+tm1Yh71xyJ6gVcR0Tqg="
     on:
-      condition: $TRAVIS_TAG =~ ^(moonsharp\\/v)
+      condition: $TRAVIS_TAG =~ ^moonsharp\/v
       all_branches: true
   - provider: releases
+    edge: true
     api_key:
-      secure: Lg7K+i697wH58tFqQIP1pZjr8xvA5EPFOgkToSNb23sXny3kWdaVSr/ezJl45GcNmiYEmoT9wtmmlySSlHitaszhzHQ3qygcSesAlBfKI3ApFg+WuTSJaqs45BVOsF5e9O2K4j3So4pU2CyYSEnd3HKc+7CKwoNQzVPLt9o04FzAyByYwLwZhp30BK1qwgYxOdgTI5tbHjq4UVmKOlWZmQ6a8j+UJm7CgUOKNMs0NICb3EtKigDF17syUXfiizd/LMADPstx5LCC4HhHpGgGqMbWGjkDdr1jzB2g0iPgcYEDgkm9zLAj1J32HxV+qGKFZhTy+01PwrtQZ+EsE5V98mejA3rP707HBKkCBqJFWoigZXH5/sGnEyMwjKypu+COZUMEwAwlEmrI5WCKlEzbTTeNu2H/Bn095xJ7KnXP2ObyiPYXxttLR8R7q/wVJh0ZVZR/O7D1NMPP25o1aYbFIqXEpHhSIj/Ilx3vaSJgbDzWJj4joPpAI/cggRtNiEWGg81/Dmszy4LV31tlV7V7AG6dwZaGeXbtbS4+2EAEy7RNbA6yeyo9Lt5Hgsw/ujA0ym7liTMrSNSrXptqm9PVv3gWHrnihp39cxcEgYI+d1lw8Rw4VFF372nfckxubi7yaNboxL1MhsOSdXW/4tdodWHmxeX2ZFAY9TOstk31BsU=
+      secure: "Lg7K+i697wH58tFqQIP1pZjr8xvA5EPFOgkToSNb23sXny3kWdaVSr/ezJl45GcNmiYEmoT9wtmmlySSlHitaszhzHQ3qygcSesAlBfKI3ApFg+WuTSJaqs45BVOsF5e9O2K4j3So4pU2CyYSEnd3HKc+7CKwoNQzVPLt9o04FzAyByYwLwZhp30BK1qwgYxOdgTI5tbHjq4UVmKOlWZmQ6a8j+UJm7CgUOKNMs0NICb3EtKigDF17syUXfiizd/LMADPstx5LCC4HhHpGgGqMbWGjkDdr1jzB2g0iPgcYEDgkm9zLAj1J32HxV+qGKFZhTy+01PwrtQZ+EsE5V98mejA3rP707HBKkCBqJFWoigZXH5/sGnEyMwjKypu+COZUMEwAwlEmrI5WCKlEzbTTeNu2H/Bn095xJ7KnXP2ObyiPYXxttLR8R7q/wVJh0ZVZR/O7D1NMPP25o1aYbFIqXEpHhSIj/Ilx3vaSJgbDzWJj4joPpAI/cggRtNiEWGg81/Dmszy4LV31tlV7V7AG6dwZaGeXbtbS4+2EAEy7RNbA6yeyo9Lt5Hgsw/ujA0ym7liTMrSNSrXptqm9PVv3gWHrnihp39cxcEgYI+d1lw8Rw4VFF372nfckxubi7yaNboxL1MhsOSdXW/4tdodWHmxeX2ZFAY9TOstk31BsU="
     file:
     - dist/luaparse.js
     - dist/luaparse.min.js
     skip_cleanup: true
     on:
-      condition: $TRAVIS_TAG =~ ^(moonsharp\\/v)
+      condition: $TRAVIS_TAG =~ ^moonsharp\/v
       all_branches: true
