@@ -29,7 +29,6 @@ deploy:
     api_key:
       secure: z14yjBrBrG+Aw7XggMHjZ5Bu1EB4BUEzXoL9akLlHBQYMEilGmNUigB5KOl8OKtuGNy2TErKLZTinPz/zIHbCcVF/okE4FaxGWoQwLTgjGfHio8y5KwpRrFkBJN7V6yIH9ZRoGYLb8X9dyj7I4twpykJca4parTCynffac9MAv7ivmK4gXScX0HzfnAamy2cEV8fT6wate1EtzmngCREPpEyJNyXwm9a+7i+15XSaFay4E0znLpIU8K/1LvdwRLoqE4IwGKAiHFfEf8Z9eMjS8OWM2QaeV8oJ4gg/2/AwZb+ENq358HT0a6Xf2kR15ipWlJtRiWz4ktbGWAN4Bq4okxfd1fQRvXcFMJwSPexxhu4ZSinnKHnE6uqS8hvt+0jSAG2F0SnZJbc3+nWCWMpCUO6JNkagp2fcaJ9SUNPPAEYcpb5lqKjJWchhvuKINo7xSka18FElUvkmmwLAlrQrL0wJA08kyfuruuTaeByzXogK0BxJNQf6naRhx5UJXLJr3VgahtzQsqpL0Cs8nfbTZHyZAj9kE0yfpHYf5LPSBMEBzKo9T0uxfdIXA7ACWiEyNXZTI++V1kp71ZdBSZrXy5cO3m70Od8UcuFENvWtfpA5U4E3FFtb1FtAmVcvkMKv43KMNhKbMwWJG3jCoz7eP1+tm1Yh71xyJ6gVcR0Tqg=
     on:
-      tags: true
       condition: $TRAVIS_TAG =~ ^(moonsharp\\/v)
       all_branches: true
   - provider: releases
@@ -40,6 +39,5 @@ deploy:
     - dist/luaparse.min.js
     skip_cleanup: true
     on:
-      tags: true
       condition: $TRAVIS_TAG =~ ^(moonsharp\\/v)
       all_branches: true
