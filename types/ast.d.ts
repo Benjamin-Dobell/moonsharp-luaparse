@@ -10,6 +10,7 @@ export interface Base<TType extends string> {
 			column: number;
 		};
 	};
+	range?: [number, number];
 }
 
 export interface LabelStatement extends Base<"LabelStatement"> {
