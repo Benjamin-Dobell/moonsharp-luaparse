@@ -31,7 +31,7 @@
     },
     {
       "source": "local a = |x| |x| x",
-      "result": "[1:15] <expression> expected near 'x'"
+      "result": "[1:14] <expression> expected near '|'"
     },
     {
       "source": "local a = |...| function() return ... end",

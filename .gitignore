@@ -7,3 +7,5 @@ dist
 logs
 components
 npm-debug.log
+.idea/
+.nyc_output/

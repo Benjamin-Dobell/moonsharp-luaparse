@@ -1,42 +1,45 @@
 language: node_js
 node_js:
-  - '10'
+- '10'
 before_install:
-  - npm install -g bower
-  - sudo chown "$USER:" /opt
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq make gcc
-  - PACKAGE=duktape-2.4.0; ( cd /opt && wget "https://duktape.org/$PACKAGE.tar.xz" && tar xf "$PACKAGE.tar.xz" && make -C "$PACKAGE/" -f Makefile.cmdline DEFINES=-DDUK_CMDLINE_FILEIO && sudo install -Dm755 "$PACKAGE/duk" /usr/local/bin/duk && rm -rf "$PACKAGE.tar.xz" "$PACKAGE/" )
-  - PACKAGE=quickjs-2019-09-18; ( cd /opt && wget "https://bellard.org/quickjs/$PACKAGE.tar.xz" && tar xf "$PACKAGE.tar.xz" && make -C "$PACKAGE/" qjs && sudo install -Dm755 "$PACKAGE/qjs" /usr/local/bin/qjs && rm -rf "$PACKAGE.tar.xz" "$PACKAGE/" )
-  - PACKAGE=Rhino1_7R4_RELEASE; wget https://github.com/mozilla/rhino/archive/$PACKAGE.zip && unzip $PACKAGE -d /opt/ && rm $PACKAGE.zip
-  - PACKAGE=Rhino1_7R4_RELEASE; echo -e '#!/bin/sh\njava -jar /opt/Rhino1_7R4_RELEASE/js.jar $@' | sudo tee /usr/local/bin/rhino && sudo chmod +x /usr/local/bin/rhino
-  - PACKAGE=ringojs-0.9; wget http://ringojs.org/downloads/$PACKAGE.zip && unzip $PACKAGE -d /opt/ && rm $PACKAGE.zip
-  - PACKAGE=ringojs-0.9; sudo ln -s /opt/$PACKAGE/bin/ringo /usr/local/bin/ringo && sudo chmod +x /usr/local/bin/ringo
+- npm install -g bower
+- sudo chown "$USER:" /opt
+- sudo apt-get update -qq
+- sudo apt-get install -qq make gcc
+- PACKAGE=duktape-2.4.0; ( cd /opt && wget "https://duktape.org/$PACKAGE.tar.xz" &&
+  tar xf "$PACKAGE.tar.xz" && make -C "$PACKAGE/" -f Makefile.cmdline DEFINES=-DDUK_CMDLINE_FILEIO
+  && sudo install -Dm755 "$PACKAGE/duk" /usr/local/bin/duk && rm -rf "$PACKAGE.tar.xz"
+  "$PACKAGE/" )
+- PACKAGE=quickjs-2019-09-18; ( cd /opt && wget "https://bellard.org/quickjs/$PACKAGE.tar.xz"
+  && tar xf "$PACKAGE.tar.xz" && make -C "$PACKAGE/" qjs && sudo install -Dm755 "$PACKAGE/qjs"
+  /usr/local/bin/qjs && rm -rf "$PACKAGE.tar.xz" "$PACKAGE/" )
+- PACKAGE=Rhino1_7R4_RELEASE; wget https://github.com/mozilla/rhino/archive/$PACKAGE.zip
+  && unzip $PACKAGE -d /opt/ && rm $PACKAGE.zip
+- PACKAGE=Rhino1_7R4_RELEASE; echo -e '#!/bin/sh\njava -jar /opt/Rhino1_7R4_RELEASE/js.jar
+  $@' | sudo tee /usr/local/bin/rhino && sudo chmod +x /usr/local/bin/rhino
+- PACKAGE=ringojs-0.9; wget http://ringojs.org/downloads/$PACKAGE.zip && unzip $PACKAGE
+  -d /opt/ && rm $PACKAGE.zip
+- PACKAGE=ringojs-0.9; sudo ln -s /opt/$PACKAGE/bin/ringo /usr/local/bin/ringo &&
+  sudo chmod +x /usr/local/bin/ringo
 before_deploy:
-  - make build
+- make build
 deploy:
   - provider: npm
-    email: public@oxy.fi
+    email: contact@glassechidna.com.au
     api_key:
-      secure: c1xVoKfBO4ZGplOkwugeWs9qtC2NQAXLS6ntUAhdk+aeFrxQBMR5oUQ721IM8V9hYhuNv8qJZowoJNyzGNr/43uh9ZSCohddX6OIyVc1Lu84JEQAt1W/WgKF8j0d/p9+WFD3EZOyvf4eotAjamJbsXkGN4GlsD0f2TKOKlt0/YY=
+      secure: z14yjBrBrG+Aw7XggMHjZ5Bu1EB4BUEzXoL9akLlHBQYMEilGmNUigB5KOl8OKtuGNy2TErKLZTinPz/zIHbCcVF/okE4FaxGWoQwLTgjGfHio8y5KwpRrFkBJN7V6yIH9ZRoGYLb8X9dyj7I4twpykJca4parTCynffac9MAv7ivmK4gXScX0HzfnAamy2cEV8fT6wate1EtzmngCREPpEyJNyXwm9a+7i+15XSaFay4E0znLpIU8K/1LvdwRLoqE4IwGKAiHFfEf8Z9eMjS8OWM2QaeV8oJ4gg/2/AwZb+ENq358HT0a6Xf2kR15ipWlJtRiWz4ktbGWAN4Bq4okxfd1fQRvXcFMJwSPexxhu4ZSinnKHnE6uqS8hvt+0jSAG2F0SnZJbc3+nWCWMpCUO6JNkagp2fcaJ9SUNPPAEYcpb5lqKjJWchhvuKINo7xSka18FElUvkmmwLAlrQrL0wJA08kyfuruuTaeByzXogK0BxJNQf6naRhx5UJXLJr3VgahtzQsqpL0Cs8nfbTZHyZAj9kE0yfpHYf5LPSBMEBzKo9T0uxfdIXA7ACWiEyNXZTI++V1kp71ZdBSZrXy5cO3m70Od8UcuFENvWtfpA5U4E3FFtb1FtAmVcvkMKv43KMNhKbMwWJG3jCoz7eP1+tm1Yh71xyJ6gVcR0Tqg=
     on:
       tags: true
+      condition: $TRAVIS_TAG =~ ^(moonsharp\\/v)
       all_branches: true
   - provider: releases
     api_key:
-      secure: GGN5c5EDpUwBduAiXefBvQjcKH8HKRvMaAHLEIvIm547sR7YUz/vynkNd7uInPG8ZCD73GHxZVxOk335TsHg7XR6Tz+mm3PmyMmqHcCMqSG+hR+s++oCiC2R04q/yM0LsaWlKPr/xzSg6dZynJsW0hy7AinXlK4g4B3kI5wtGls=
+      secure: Lg7K+i697wH58tFqQIP1pZjr8xvA5EPFOgkToSNb23sXny3kWdaVSr/ezJl45GcNmiYEmoT9wtmmlySSlHitaszhzHQ3qygcSesAlBfKI3ApFg+WuTSJaqs45BVOsF5e9O2K4j3So4pU2CyYSEnd3HKc+7CKwoNQzVPLt9o04FzAyByYwLwZhp30BK1qwgYxOdgTI5tbHjq4UVmKOlWZmQ6a8j+UJm7CgUOKNMs0NICb3EtKigDF17syUXfiizd/LMADPstx5LCC4HhHpGgGqMbWGjkDdr1jzB2g0iPgcYEDgkm9zLAj1J32HxV+qGKFZhTy+01PwrtQZ+EsE5V98mejA3rP707HBKkCBqJFWoigZXH5/sGnEyMwjKypu+COZUMEwAwlEmrI5WCKlEzbTTeNu2H/Bn095xJ7KnXP2ObyiPYXxttLR8R7q/wVJh0ZVZR/O7D1NMPP25o1aYbFIqXEpHhSIj/Ilx3vaSJgbDzWJj4joPpAI/cggRtNiEWGg81/Dmszy4LV31tlV7V7AG6dwZaGeXbtbS4+2EAEy7RNbA6yeyo9Lt5Hgsw/ujA0ym7liTMrSNSrXptqm9PVv3gWHrnihp39cxcEgYI+d1lw8Rw4VFF372nfckxubi7yaNboxL1MhsOSdXW/4tdodWHmxeX2ZFAY9TOstk31BsU=
     file:
-      - dist/luaparse.js
-      - dist/luaparse.min.js
+    - dist/luaparse.js
+    - dist/luaparse.min.js
     skip_cleanup: true
     on:
       tags: true
+      condition: $TRAVIS_TAG =~ ^(moonsharp\\/v)
       all_branches: true
-after_success:
-  - '[ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ] && BUILD_DOCS=true || BUILD_DOCS=false'
-  - '[ "$BUILD_DOCS" = "true" ] && openssl aes-256-cbc -K $encrypted_ce12c8d20fd6_key -iv $encrypted_ce12c8d20fd6_iv -in .travis/deploy_key.enc -out .travis/deploy_key -d'
-  - '[ "$BUILD_DOCS" = "true" ] && chmod 600 .travis/deploy_key && eval `ssh-agent -s` && ssh-add .travis/deploy_key'
-  - '[ "$BUILD_DOCS" = "true" ] && git clone --branch gh-pages git@github.com:fstirlitz/luaparse.git gh-pages && cd gh-pages'
-  - '[ "$BUILD_DOCS" = "true" ] && make'
-  - '[ "$BUILD_DOCS" = "true" ] && git config user.name "Travis" && git config user.email "public@oxy.fi"'
-  - '[ "$BUILD_DOCS" = "true" ] && git add . && git commit --message "build documentation" && git push origin gh-pages'

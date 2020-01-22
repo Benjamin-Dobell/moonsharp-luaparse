@@ -682,12 +682,12 @@
           if (47 === next) return scanPunctuator('//');
         return scanPunctuator('/');
 
-      case 38:
+      case 38: // &
         if (!features.bitwiseOperators)
           break;
         /* fall through */
 
-      case 124: // & |
+      case 124: // |
 
         /* fall through */
       case 42: case 94: case 37: case 44: case 123: case 125:
@@ -2154,7 +2154,7 @@
     var parameters = parseParameterList(flowContext, '|');
 
     if (token.type === Punctuator && token.value === '|') { // Non-parenthesized nested short functions are forbidden.
-      raiseUnexpectedToken('<expression>', lookahead);
+      raiseUnexpectedToken('<expression>', token);
     }
 
     var expression = parseExpectedExpression(flowContext);
