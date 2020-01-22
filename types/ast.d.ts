@@ -194,6 +194,11 @@ export interface Comment extends Base<"Comment"> {
 	raw: string;
 }
 
+export interface ShortFunctionDefinition extends Base<"ShortFunctionDefinition"> {
+	parameters: Array<Identifier | VarargLiteral>;
+	expression: Expression;
+}
+
 export type Expression =
 	FunctionDeclaration |
 	Identifier |
