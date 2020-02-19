@@ -287,8 +287,6 @@ installed browser.
 
 ### Other quality assurance measures
 
-- You can check the function complexity using [complexity-report](https://github.com/philbooth/complexityReport.js)
-using `make complexity-analysis`
 - Running `make coverage` will generate the [coverage report](https://fstirlitz.github.io/luaparse/coverage.html).
 To simply check that all code has coverage you can run `make coverage-analysis`.
 - `make lint`, `make benchmark`, `make profile`.

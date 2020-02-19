@@ -110,22 +110,14 @@ benchmark-previous:
 
 .PHONY: benchmark profile benchmark-previous
 
-# Quality Assurance
-# -----------------
-
-complexity-analysis:
-	@echo "===================== Complexity analysis ============================"
-	./scripts/complexity 10
-	$(BIN)/cr -lws --maxcc 22 luaparse.js
-
 coverage-analysis: coverage
 	$(BIN)/nyc check-coverage --statements 100 --branches 100 --functions 100
 
 qa:
-	$(MAKE) test lint complexity-analysis coverage-analysis
+	$(MAKE) test lint coverage-analysis
 
 clean:
 	rm -f docs/*.html
 	rm -rf lib-cov coverage html-report docs/coverage/
 
-.PHONY: complexity-analysis coverage-analysis qa clean
+.PHONY: coverage-analysis qa clean
