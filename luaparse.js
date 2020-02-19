@@ -666,6 +666,10 @@
           break;
         return scanPunctuator('~');
 
+      case 33:
+        if (61 === next) return scanPunctuator('!=');
+        break;
+
       case 58: // :
         if (features.labels)
           if (58 === next) return scanPunctuator('::');
@@ -2299,7 +2303,7 @@
         case 60: case 62:
             if('<<' === operator || '>>' === operator) return 7; // << >>
             return 3; // <= >=
-        case 61: case 126: return 3; // == ~=
+        case 61: case 126: case 33: return 3; // == ~= !=
         case 111: return 1; // or
       }
     } else if (97 === charCode && 'and' === operator) return 2;

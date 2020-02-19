@@ -152,7 +152,7 @@ export interface UnaryExpression extends Base<"UnaryExpression"> {
 }
 
 export interface BinaryExpression extends Base<"BinaryExpression"> {
-	operator: "+" | "-" | "*" | "%" | "^" | "/" | "//" | "&" | "|" | "~" | "<<" | ">>" | ".." | "~=" | "=="  | "<" | "<=" | ">" | ">=";
+	operator: "+" | "-" | "*" | "%" | "^" | "/" | "//" | "&" | "|" | "~" | "<<" | ">>" | ".." | "~=" | "!=" | "=="  | "<" | "<=" | ">" | ">=";
 	left: Expression;
 	right: Expression;
 }
