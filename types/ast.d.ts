@@ -174,6 +174,11 @@ export interface IndexExpression extends Base<"IndexExpression"> {
 	index: Expression;
 }
 
+export interface IndexesExpression extends Base<"IndexesExpression"> {
+	base: Expression;
+	indexes: Expression[];
+}
+
 export interface CallExpression extends Base<"CallExpression"> {
 	base: Expression;
 	arguments: Expression[];

@@ -235,6 +235,10 @@
           visitKey('base');
           visitKey('index');
           break;
+        case 'IndexesExpression':
+          visitKey('base');
+          visitKey('indexes');
+          break;
         case 'LabelStatement':
           visitKey('label');
           break;

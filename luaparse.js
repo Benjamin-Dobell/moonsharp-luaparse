@@ -354,6 +354,14 @@
       };
     }
 
+    , indexesExpression: function(base, indexes) {
+      return {
+        type: 'IndexesExpression'
+        , base: base
+        , indexes: indexes
+      };
+    }
+
     , callExpression: function(base, args) {
       return {
           type: 'CallExpression'
@@ -2374,16 +2382,21 @@
   //     args ::= '(' [explist] ')' | tableconstructor | String
 
   function parsePrefixExpressionPart(base, marker, flowContext) {
-    var expression, identifier;
+    var expressions, identifier;
 
     if (Punctuator === token.type) {
       switch (token.value) {
         case '[':
           pushLocation(marker);
           next();
-          expression = parseExpectedExpression(flowContext);
+          expressions = [];
+          expressions.push(parseExpectedExpression(flowContext));
+          while (consume(',')) {
+            expressions.push(parseExpectedExpression(flowContext));
+          }
           expect(']');
-          return finishNode(ast.indexExpression(base, expression));
+          return expressions.length === 1 ? finishNode(ast.indexExpression(base, expressions[0]))
+            : finishNode(ast.indexesExpression(base, expressions));
         case '.':
           pushLocation(marker);
           next();
