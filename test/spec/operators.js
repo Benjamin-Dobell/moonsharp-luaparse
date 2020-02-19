@@ -3090,6 +3090,10 @@
       "result": "[1:5] unexpected symbol '~' near '='"
     },
     {
+      "source": "a = !",
+      "result": "[1:5] unexpected symbol '!' near '='"
+    },
+    {
       "source": "a = ~= 2",
       "result": "[1:4] <expression> expected near '~='"
     },
